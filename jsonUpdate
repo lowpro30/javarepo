@@ -1,0 +1,31 @@
+curl -X POST "https://example.com/api/v2/settings/objects?validateOnly=false" \
+  -H "Authorization: Api-Token <YOUR_TOKEN>" \
+  -H "Content-Type: application/json" \
+  -d '[
+  {
+    "schemaId": "builtin:maintenance-windows",
+    "scope": "environment",
+    "value": {
+      "name": "Weekly Synthetic Monitor Maintenance (Fri 19:00 - Mon 01:00)",
+      "enabled": true,
+      "description": "Recurring maintenance for 6 synthetic monitors; Friday 19:00 to Monday 01:00, America/Chicago time.",
+      "schedule": {
+        "trigger": {
+          "time": "19:00",
+          "rule": "<SCHEDULING_RULE_REFERENCE_FROM_STEP_1>",
+          "earliestStart": "2026-10-16"
+        },
+        "timezone": "America/Chicago",
+        "duration": 3240
+      },
+      "filter": "monitor.id IN (\"SYNTHETIC_MONITOR-XXXXXXXXXXXXXXXX\", \"SYNTHETIC_MONITOR-YYYYYYYYYYYYYYYY\", \"SYNTHETIC_MONITOR-ZZZZZZZZZZZZZZZZ\", \"SYNTHETIC_MONITOR-AAAAAAAAAAAAAAAA\", \"SYNTHETIC_MONITOR-BBBBBBBBBBBBBBBB\", \"SYNTHETIC_MONITOR-CCCCCCCCCCCCCCCC\")",
+      "autoDelete": false,
+      "objectScopes": {
+        "syntheticMonitors": {
+          "disableSyntheticMonitors": true,
+          "disableSyntheticMonitorFilter": "monitor.id IN (\"SYNTHETIC_MONITOR-XXXXXXXXXXXXXXXX\", \"SYNTHETIC_MONITOR-YYYYYYYYYYYYYYYY\", \"SYNTHETIC_MONITOR-ZZZZZZZZZZZZZZZZ\", \"SYNTHETIC_MONITOR-AAAAAAAAAAAAAAAA\", \"SYNTHETIC_MONITOR-BBBBBBBBBBBBBBBB\", \"SYNTHETIC_MONITOR-CCCCCCCCCCCCCCCC\")"
+        }
+      }
+    }
+  }
+]'
