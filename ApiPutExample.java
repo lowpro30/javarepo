@@ -10,12 +10,45 @@ public class ApiPutExample {
         try {
             // Create an HttpClient
             HttpClient client = HttpClient.newHttpClient();
+//	    String jsonPayload = "{ \"name\": \"Updated Name\", \"description\": \"Updated Description\" }";
+
 
             // Define the API endpoint URL
-            String apiUrl = "https://api.example.com/resource/123"; // Replace with your API endpoint
+            // String apiUrl = "https://api.example.com/resource/123"; // Replace with your API endpoint
+	    
+	    // Use the GoLang application for testing locally
+           String apiUrl = "http://localhost:8080/resource/123"; // Replace with your API endpoint
 
-            // Create the JSON payload for the PUT request
-            String jsonPayload = "{ \"name\": \"Updated Name\", \"description\": \"Updated Description\" }";
+            // Use Java Text Blocks (Java 15+) to handle multi-line JSON and quotes without manual escaping
+            String jsonPayload = """
+                {
+                  "schemaId": "builtin:maintenance-windows",
+                  "scope": "environment",
+                  "value": {
+                    "name": "Weekly Synthetic Monitor Maintenance (Fri 19:00 - Mon 01:00)",
+                    "enabled": true,
+                    "description": "Recurring maintenance for 6 synthetic monitors; Friday 19:00 to Monday 01:00, America/Chicago time.",
+                    "schedule": {
+                      "trigger": {
+                        "time": "19:00",
+                        "rule": "<SCHEDULING_RULE_REFERENCE_FROM_STEP_1>",
+                        "earliestStart": "2026-10-16"
+                      },
+                      "timezone": "America/Chicago",
+                      "duration": 3240
+                    },
+                    "filter": "monitor.id IN (\\\"SYNTHETIC_MONITOR-REAL-ID-1\\\", \\\"SYNTHETIC_MONITOR-REAL-ID-2\\\")",
+                    "autoDelete": false,
+                    "objectScopes": {
+                      "syntheticMonitors": {
+                        "disableSyntheticMonitors": true,
+                        "disableSyntheticMonitorFilter": "monitor.id IN (\\\"SYNTHETIC_MONITOR-REAL-ID-1\\\", \\\"SYNTHETIC_MONITOR-REAL-ID-2\\\")"
+                      }
+                    }
+                  }
+                }
+                """;
+
 
             // Create an HttpRequest for the PUT method
             HttpRequest request = HttpRequest.newBuilder()
